@@ -5,8 +5,81 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dictionary</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: rgb(5, 62, 122);
+            text-align: center;
+        }
+        .title {
+            font-size: 2.2rem;
+            font-weight: 800;
+        }
+        .description {
+            font-size: 1rem;
+            font-weight: 200;
+        }
+        .word {
+            font-weight: 800;
+            color: rgb(143, 34, 34);
+        }
+        ul {
+            list-style: none;
+        }
+        .linkToLetter {
+            color: rgb(5, 62, 122);
+            padding: 0 5px;
+            padding-left: 20px;
+            text-decoration: none;
+            transition: 0.5s;
+        }
+        .linkToLetter:hover {
+            color: rgb(143, 34, 34);
+            padding: 5px 5px;
+            transition: 0.5s;
+        }
+    </style>
 </head>
 <body>
-    
+    <h1 class="title">Dictionary</h1>
+
+    {% if number_of_words > 1 %}
+        {% if number_of_words == 2 %}
+            <p>There's just one more word in the dictionary starting with these letters!</p>
+        {% else %}
+            <p>There are {{ number_of_words - 1 }} words in the dictionary that start with</p>
+        {% endif %}
+    {% else %}
+        {% if number_of_words == 1 %}
+            <p>You've just found the only word in the dictionary with these letters!</p>
+            <a class="linkToLetter" href="{{ url_for('start') }}">Start Over</a>
+        {% else %}
+            <p>Oops! There is no such word in the dictionary!</p>
+            <a class="linkToLetter" href="{{ url_for('start') }}">Start Over</a>
+        {% endif %}
+    {% endif %}
+
+    {% if word == "" %}
+        <p class="word">any of the 24 letters of the alphabet</p>
+    {% else %}
+        <p class="word">{{ word }}</p>
+    {% endif %}
+
+    <ul>
+        {% for letter in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" %}
+            {% if word == "" %}
+                <li>{{ word }}<a class="linkToLetter" href="dictionary/{{ word+letter }}">{{ letter }}</a></li>
+            {% else %}
+                {% if number_of_words > 1 %}
+                    <li>{{ word }}<a class="linkToLetter" href="{{ word+letter }}">{{ letter }}</a></li>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </ul>
+
 </body>
 </html>
